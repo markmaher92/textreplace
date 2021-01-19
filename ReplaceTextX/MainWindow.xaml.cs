@@ -59,11 +59,37 @@ namespace ReplaceTextX
                 NEwMapped.Add(item);
                 foreach (var Map in Mapping)
                 {
-                    if (item.Contains(Map.Item1))
+                    string NewTest = item;
+                    if (item.Contains(@"\X2\00F6\X0\"))
                     {
-                        var newstring = item.Replace(Map.Item1, Map.Item2);
+                        NewTest = item.Replace(@"\X2\00F6\X0\","ö");
+                    }
+                    if (item.Contains(@"\X2\00FC\X0\"))
+                    {
+                        NewTest = item.Replace(@"\X2\00FC\X0\", "ü");
+                    }
+                    if (item.Contains(@"\X2\00E4\X0\"))
+                    {
+                        NewTest = item.Replace(@"\X2\00E4\X0\", "ä");
+                    }
+                    if (NewTest.Contains(Map.Item1))
+                    {
+                        var newstring = Map.Item2;
+                        if (Map.Item2.ToLower().Contains(@"ö"))
+                        {
+                            newstring = newstring.Replace("ö",@"\X2\00F6\X0\");
+                        }
+                        if (Map.Item2.ToLower().Contains(@"ü"))
+                        {
+                            newstring = newstring.Replace("ü",@"\X2\00FC\X0\" );
+                        }
+                        if (Map.Item2.ToLower().Contains(@"ä"))
+                        {
+                            newstring = newstring.Replace("ä",@"\X2\00E4\X0\");
+                        }
+                        var MAppednewstring = NewTest.Replace(Map.Item1, newstring);
                         NEwMapped.RemoveAt(NEwMapped.Count -1);
-                        NEwMapped.Add(newstring);
+                        NEwMapped.Add(MAppednewstring);
                     }
                 }
             }
