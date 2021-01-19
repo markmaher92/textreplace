@@ -50,20 +50,24 @@ namespace ReplaceTextX
             List<Tuple<string, string>> Mapping = new List<Tuple<string, string>>();
             foreach (var item in File.ReadLines(PathMAP.Text))
             {
-               Mapping.Add(new Tuple<string,string>(item.Split(':')[0], item.Split(':')[1] ));
+                Mapping.Add(new Tuple<string, string>(item.Split(':')[0].Trim(), item.Split(':')[1].Trim()));
             }
             List<string> MapNames = File.ReadLines(PathIFC.Text).ToList();
+            List<string> NEwMapped = new List<string>();
             foreach (var item in File.ReadLines(PathIFC.Text))
             {
+                NEwMapped.Add(item);
                 foreach (var Map in Mapping)
                 {
                     if (item.Contains(Map.Item1))
                     {
-                        item.Replace(Map.Item1, Map.Item2);
+                        var newstring = item.Replace(Map.Item1, Map.Item2);
+                        NEwMapped.RemoveAt(NEwMapped.Count -1);
+                        NEwMapped.Add(newstring);
                     }
                 }
             }
-            File.WriteAllLines(PathIFC.Text.Replace(".IFC", "New.IFC"), MapNames);
+            File.WriteAllLines(PathIFC.Text.Replace(".ifc", "New.ifc"), NEwMapped);
         }
     }
 }
